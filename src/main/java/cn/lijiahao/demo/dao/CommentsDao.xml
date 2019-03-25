@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lijiahao.demo.dao.CommentsDao">
+
+
+	<resultMap type="comments" id="commentsType">
+		<id property="id" column="id"/>
+		<result property="sys_uid" column="sys_uid"/>
+		<result property="sys_mid" column="sys_mid"/>
+		<result property="islike" column="islike"/>
+		
+		
+		<association property="user" column="sys_uid" javaType="user"
+		select="cn.lijiahao.demo.dao.UserDao.selectById" />
+	</resultMap>
+	<!-- 通过文章id查找文章评论 -->
+	<select id="selectBysys_mid" parameterType="String" resultMap="commentsType">
+		select *
+		from sys_comments
+		where sys_mid = #{sys_mid}
+	</select>
+	<!-- 通过id查找评论-->
+	<select id="selectById" parameterType="String" resultMap="commentsType">
+		select *
+		from sys_comments
+		where id = #{id}
+	</select>
+	<!-- 添加评论 -->
+	<insert id="add" parameterType="comments">
+		insert into sys_comments(id,sys_mid,sys_uid,content,isdelete)
+		values(#{id},#{sys_mid},#{sys_uid},#{content},#{isdelete})
+	</insert>
+	<!-- 查询所有评论 -->
+	<select id="selectAll" resultMap="commentsType">
+		select * from sys_comments
+	</select>
+	<!-- 根据begin，size来返回评论list列表 -->
+	<select id="selectAllOrderPage" parameterType="Integer" resultMap="commentsType">
+		select * from sys_comments limit #{begin},#{size}
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="selectCountOfRows" resultType="Integer">
+		select count(*) from sys_comments
+	</select>
+	
+	<!-- 更新评论信息 -->
+	<update id="update" parameterType="comments">
+		update sys_comments
+		<set>
+			<if test="sys_uid !=null and sys_uid !=''">
+				sys_uid=#{sys_uid},
+			</if>
+			<if test="sys_mid !=null and sys_mid !=''">
+				sys_mid=#{sys_mid},
+			</if>
+			<if test="content !=null and content !=''">
+				content=#{content},
+			</if>
+			<if test="isdelete !=null and isdelete !=''">
+				isdelete=#{isdelete},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 通过id删除评论-->
+	<update id="deleteById" parameterType="Integer">
+		update sys_comments set isdelete=1 where id=#{id}
+	</update>
+</mapper>

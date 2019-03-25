@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- 配置别名 -->
+<!-- 在applicationContext.xml中已经配置了 -->
+<!-- <typeAliases>
+	<package name="cn.lijiahao.demo.po"/>
+</typeAliases> -->
+<mappers>
+	<mapper resource="cn/lijiahao/demo/dao/UserDao.xml"/>
+	<mapper resource="cn/lijiahao/demo/dao/RoleDao.xml"/>
+	<mapper resource="cn/lijiahao/demo/dao/MomentsDao.xml"/>
+	<mapper resource="cn/lijiahao/demo/dao/HistoryDao.xml"/>
+	<mapper resource="cn/lijiahao/demo/dao/CommentsDao.xml"/>
+	<mapper resource="cn/lijiahao/demo/dao/CategoryDao.xml"/>
+</mappers>
+</configuration>

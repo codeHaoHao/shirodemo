@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lijiahao.demo.dao.UserDao">
+	<!-- <resultMap type="user" id="userType">
+		<id property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="name" column="name" />
+		<result property="dataOfBirth" column="dataOfBirth" />
+		<result property="age" column="age" />
+		<result property="gender" column="gender" />
+		<result property="salt" column="salt" />
+		<result property="locked" column="locked" />
+		
+		
+		<collection property="moments" column="id" ofType="moments"
+		select="cn.lijiahao.demo.dao.MomentsDao.selectBysys_uid"/>
+		<collection property="likeMoments" column="id" ofType="like"
+		select="cn.lijiahao.demo.dao.LikeDao.selectBysys_uid"/>
+		<collection property="history" column="id" ofType="history"
+		select="cn.lijiahao.demo.dao.HistoryDao.selectBysys_uid"/>
+	</resultMap> -->
+	<!-- 通过用户名查询用户 -->
+	<select id="selectByUsername" parameterType="String" resultType="user">
+		select *
+		from sys_user
+		where username = #{username}
+	</select>
+	<!-- 通过id查找用户 -->
+	<select id="selectByid" parameterType="String" resultType="user">
+		select *
+		from sys_user
+		where id = #{id}
+	</select>
+	<select id="selectById" parameterType="String" resultType="user">
+		select *
+		from sys_user
+		where id = #{id}
+	</select>
+	<!-- 添加用户 -->
+	<insert id="add" parameterType="user">
+		insert into sys_user(id,username,password,name,dataOfBirth,age,gender,avatar,individualResume)
+		values(#{id},#{username},#{password},#{name},#{dataOfBirth},#{age},#{gender},#{avatar},#{individualResume})
+	</insert>
+	<!-- 查询所有用户 -->
+	<select id="selectAll" resultType="user">
+		select * from sys_user
+	</select>
+	<!-- 根据begin，size来返回用户list列表 -->
+	<select id="selectAllOrderPag" parameterType="Integer" resultType="user">
+		select * from sys_user limit #{begin},#{size}
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="selectCountOfRows" resultType="Integer">
+		select count(*) from sys_user
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="user">
+		update sys_user
+		<set>
+			<if test="username !=null and username !=''">
+				username=#{username},
+			</if>
+			<if test="password !=null and password !=''">
+				password=#{password},
+			</if>
+			<if test="dataOfBirth !=null">
+				dataOfBirth=#{dataOfBirth},
+			</if>
+			<if test="name !=null and name !=''">
+				name=#{name},
+			</if>
+			<if test="age !=null and age !=''">
+				age=#{age},
+			</if>
+			<if test="gender !=null and gender !=''">
+				gender=#{gender},
+			</if>
+			<if test="avatar !=null and avatar !=''">
+				avatar=#{avatar},
+			</if>
+			<if test="individualResume !=null and individualResume !=''">
+				individualResume=#{individualResume},
+			</if>
+			<if test="locked !=null and locked !=''">
+				locked=#{locked}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 通过id删除用户 -->
+	<update id="deleteById" parameterType="Integer">
+		update sys_user set locked='1' where id=#{id}
+	</update>
+</mapper>

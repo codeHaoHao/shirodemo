@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lijiahao.demo.dao.MomentsDao">
+	<!-- <resultMap type="moments" id="momentsType">
+		<id property="id" column="id"/>
+		<result property="sys_uid" column="sys_uid"/>
+		<result property="title" column="title"/>
+		<result property="image" column="image"/>
+		<result property="content" column="content"/>
+		<result property="time" column="time"/>
+		<result property="amountOfReading" column="amountOfReading"/>
+		<result property="isdelete" column="isdelete"/>
+		
+		<collection property="comments" column="id" ofType="comments"
+		select="cn.lijiahao.demo.dao.CommentsDao.selectBysys_mid" />
+	</resultMap> -->
+	
+	<!-- 通过 -->
+	<select id="selectByLikesBylikearray" resultType="moments">
+		select *
+		from sys_moments
+		where isdelete=0 and id in 
+		<foreach collection="likes" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by
+		field(
+		id,
+		<foreach collection="likes" item="item" index="index"  separator="," >
+			#{item}
+		</foreach>
+		)
+		limit #{begin},#{size}
+	</select>
+	<update id="increaseAmountOfReading" parameterType="moments">
+		update sys_moments
+		<set>
+			<if test="amountOfReading !=null and amountOfReading !=''">
+				amountOfReading=#{amountOfReading},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="selectBysys_cid" resultType="moments">
+		select *
+		from sys_moments
+		where isdelete=0 and sys_cid = #{id} order by time desc limit #{begin},#{size}
+	</select>
+	<!-- 通过文章title查询文章 -->
+	<select id="selectByMomentsTitleName" parameterType="String" resultType="moments">
+		select *
+		from sys_moments
+		where title = #{titleName} and isdelete=0
+	</select>
+	<!-- 通过文章title查询文章 -->
+	<select id="selectBysys_uid" resultType="moments">
+		select *
+		from sys_moments
+		where isdelete=0 and sys_uid = #{id} order by time desc  limit #{begin},#{size}
+	</select>
+	<select id="selectAllBysys_uid" resultType="moments">
+		select *
+		from sys_moments
+		where isdelete=0 and sys_uid = #{id}
+	</select>
+	<!-- 通过id查找文章-->
+	<select id="selectByid" parameterType="String" resultType="moments">
+		select *
+		from sys_moments
+		where id = #{id} and isdelete = 0
+	</select>
+	<!-- 添加文章 -->
+	<insert id="add" parameterType="moments">
+		insert into sys_moments(id,sys_uid,sys_cid,title,image,content,time,slogan,amountOfReading,isdelete,transpondBy)
+		values(#{id},#{sys_uid},#{sys_cid},#{title},#{image},#{content},#{time},#{slogan},#{amountOfReading},#{isdelete},#{transpondBy})
+	</insert>
+	<!-- 查询所有文章 -->
+	<select id="selectAll" resultType="moments">
+		select * from sys_moments where isdelete =0
+	</select>
+	<!-- 根据begin，size来返回文章list列表 -->
+	<select id="selectAllOrderPage" parameterType="Integer" resultType="moments">
+		select * from sys_moments where isdelete = 0 order by time desc limit #{begin},#{size}
+	</select>
+	<!-- admin根据begin，size来返回文章list列表 -->
+	<select id="adminSelectAllOrderPage" parameterType="Integer" resultType="moments">
+		select * from sys_moments order by time desc limit #{begin},#{size}
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="selectCountOfRows" resultType="Integer">
+		select count(*) from sys_moments where isdelete =0
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="adminSelectCountOfRows" resultType="Integer">
+		select count(*) from sys_moments 
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="searchByTitle" parameterType="String" resultType="moments">
+		select * from sys_moments where title like CONCAT('%',#{title},'%')
+	</select>
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="moments">
+		update sys_moments
+		<set>
+			<if test="sys_uid !=null and sys_uid !=''">
+				sys_uid=#{sys_uid},
+			</if>
+			<if test="sys_cid !=null and sys_cid !=''">
+				sys_cid=#{sys_cid},
+			</if>
+			<if test="title !=null and title !=''">
+				title=#{title},
+			</if>
+			<if test="image !=null and image !=''">
+				image=#{image},
+			</if>
+			<if test="content !=null and content !=''">
+				content=#{content},
+			</if>
+			<if test="time !=null">
+				time=#{time},
+			</if>
+			<if test="slogan !=null and slogan !=''">
+				slogan=#{slogan},
+			</if>
+			<if test="amountOfReading !=null and amountOfReading !=''">
+				amountOfReading=#{amountOfReading},
+			</if>
+			<if test="isdelete !=null and isdelete !=''">
+				isdelete=#{isdelete},
+			</if>
+			<if test="transpondBy !=null and transpondBy !=''">
+				transpondBy=#{transpondBy},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 通过id删除文章-->
+	<update id="deleteById" parameterType="String">
+		update sys_moments set isdelete=1 where id=#{id}
+	</update>
+	
+	<!-- 通过id取消删除文章-->
+	<update id="cancelDeleteById" parameterType="String">
+		update sys_moments set isdelete=0 where id=#{id}
+	</update>
+</mapper>

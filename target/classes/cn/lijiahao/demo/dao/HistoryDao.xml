@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lijiahao.demo.dao.HistoryDao">
+
+	<!-- <resultMap type="history" id="historyType">
+		<id property="id" column="id"/>
+		<result property="sys_uid" column="sys_uid"/>
+		<result property="sys_mid" column="sys_mid"/>
+		<result property="historyTime" column="historyTime"/>
+		
+		
+		<association property="moment" column="sys_mid" javaType="moments"
+		select="cn.lijiahao.demo.dao.MomentsDao.selectById" />
+	</resultMap> -->
+	
+	
+	<!-- 通过用户id查找用户历史记录 -->
+	<select id="selectBysys_uid" parameterType="String" resultType="String">
+		select sys_mid
+		from sys_history
+		where  sys_uid= #{sys_uid} order by historyTime desc
+	</select>
+	<!-- 通过用户sys_mid和sys_uid查找用户是否有该文章的历史记录 -->
+	<select id="selectHistoryBysys_midAndsys_uid" parameterType="String" resultType="history">
+		select *
+		from sys_history
+		where  sys_uid= #{sys_uid} and sys_mid=#{sys_mid}
+	</select>
+	<!-- 通过id查找历史记录-->
+	<select id="selectById" parameterType="String" resultType="history">
+		select *
+		from sys_history
+		where id = #{id}
+	</select>
+	<!-- 添加历史记录 -->
+	<insert id="add" parameterType="history">
+		insert into sys_history(id,sys_uid,sys_mid,historyTime)
+		values(#{id},#{sys_uid},#{sys_mid},#{historyTime})
+	</insert>
+	<!-- 查询所有历史记录 -->
+	<select id="selectAll" resultType="history">
+		select * from sys_history
+	</select>
+	<!-- 根据begin，size来返回历史记录list列表 -->
+	<select id="selectAllOrderPage" parameterType="Integer" resultType="history">
+		select * from sys_history limit #{begin},#{size}
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="selectCountOfRows" resultType="Integer" parameterType="String">
+		select count(*) from sys_history where sys_uid=#{sys_uid}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="history">
+		update sys_history
+		<set>
+			<if test="sys_uid !=null and sys_uid !=''">
+				sys_uid=#{sys_uid},
+			</if>
+			<if test="sys_mid !=null and sys_mid !=''">
+				sys_mid=#{sys_mid},
+			</if>
+			<if test="historyTime !=null">
+				historyTime=#{historyTime},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 通过id删除历史记录-->
+	<delete id="deleteById" parameterType="Integer">
+		delete from sys_history where id=#{id}
+	</delete>
+</mapper>

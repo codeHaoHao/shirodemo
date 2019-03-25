@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lijiahao.demo.dao.LikeDao">
+
+	<!-- <resultMap type="like" id="likeType">
+		<id property="id" column="id"/>
+		<result property="sys_uid" column="sys_uid"/>
+		<result property="sys_mid" column="sys_mid"/>
+		<result property="likeTime" column="likeTime"/>
+		
+		
+		<association property="moment" column="sys_mid" javaType="moments"
+		select="cn.lijiahao.demo.dao.MomentsDao.selectById" />
+	</resultMap> -->
+	<!-- 通过用户id查找用户点赞记录 -->
+	<select id="selectBysys_uidAndsys_mid" parameterType="String" resultType="like">
+		select *
+		from sys_like
+		where  sys_uid= #{sys_uid} and sys_mid=#{sys_mid}
+	</select>
+	<!-- 通过用户id查找用户点赞记录 -->
+	<select id="selectBySys_mid" parameterType="String" resultType="like">
+		select *
+		from sys_like
+		where  sys_mid= #{sys_mid}
+	</select>
+	<!-- 通过用户id查找用户点赞记录 -->
+	<select id="selectSys_midBySys_uid" parameterType="String" resultType="String">
+		select sys_mid
+		from sys_like
+		where  sys_uid= #{sys_uid}
+	</select>
+	<!-- 通过用户id查找用户点赞记录 -->
+	<select id="selectBySys_uid" parameterType="String" resultType="like">
+		select *
+		from sys_like
+		where  sys_uid= #{sys_uid}
+	</select>
+	<!-- 通过id查找点赞记录-->
+	<select id="selectById" parameterType="String" resultType="like">
+		select *
+		from sys_like
+		where id = #{id}
+	</select>
+	<!-- 添加点赞记录 -->
+	<insert id="add" parameterType="like">
+		insert into sys_like(id,sys_uid,sys_mid,islike)
+		values(#{id},#{sys_uid},#{sys_mid},#{islike})
+	</insert>
+	<!-- 查询所有点赞记录 -->
+	<select id="selectAll" resultType="like">
+		select * from sys_like
+	</select>
+	<!-- 根据begin，size来返回点赞记录list列表 -->
+	<select id="selectAllOrderPage" parameterType="Integer" resultType="like">
+		select * from sys_like limit #{begin},#{size}
+	</select>
+	<!-- 返回所有信息的行数 -->
+	<select id="selectCountOfRows" resultType="Integer">
+		select count(*) from sys_like
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="update" parameterType="like">
+		update sys_like
+		<set>
+			<if test="sys_uid !=null and sys_uid !=''">
+				sys_uid=#{sys_uid},
+			</if>
+			<if test="sys_mid !=null and sys_mid !=''">
+				sys_mid=#{sys_mid},
+			</if>
+			<if test="islike !=null and islike != ''">
+				islike=#{islike},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 通过id删除点赞记录-->
+	<delete id="deleteById" parameterType="String">
+		delete from sys_like where id=#{id}
+	</delete>
+</mapper>
