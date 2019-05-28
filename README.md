@@ -1,7 +1,7 @@
 # shirodemo
 该系统用的是SSM框架，同时用了shiro做了权限管理，前端数据的异步通信用了vue和ajax，数据库用的是mysql，我用的是Tomcat8  <br/>
 该文件是在eclipse里创建的，下载后如果要在本机运行需要进行一些配置  <br>
-
+<li>数据库文件在src的resource下面的shirodemo.sql，用mysql运行就ok了，数据库名字也是shirodemo</li>
 <li>1.需要先配置Tomcat的server.xml文件</li>
 <image  src="https://github.com/codeHaoHao/readME-file/blob/master/shirodemo-readME/1.png"/>
 如上图所示需要在tomcat的server.xml的<Host></Host>标签中加入下面这一句话<br/>
