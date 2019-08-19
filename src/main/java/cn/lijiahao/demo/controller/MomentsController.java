@@ -3,12 +3,7 @@ package cn.lijiahao.demo.controller;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.catalina.connector.Request;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -210,7 +205,7 @@ public class MomentsController {
 	
 	@RequestMapping("loadUserAllMomentsData.action")
 	@ResponseBody
-	public List loadUserAllMomentsData(Model model,String id){
+	public List<Moments> loadUserAllMomentsData(Model model,String id){
 		List<Moments> moments = momentsService.selectBysys_uid(id, 0, 8);
 		return moments;
 	}
