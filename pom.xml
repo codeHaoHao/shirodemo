@@ -76,7 +76,7 @@ spring-data-redisr
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- 上传组件包 -->
@@ -272,7 +272,7 @@ spring-data-redisr
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
