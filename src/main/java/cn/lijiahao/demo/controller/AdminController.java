@@ -47,8 +47,8 @@ public class AdminController {
 	
 	@RequestMapping("/adminManagerUsersPageable.action")
 	@ResponseBody
-	public List<User> adminManagerUsersPageable(int page,int size){
-		List<User> users = userService.selectAllOrderPag((page-1)*15, 15);
+	public List<User> adminManagerUsersPageable(int page, int size) {
+		List<User> users = userService.selectAllOrderPag((page - 1) * 15, 15);
 		return users;
 	}
 	@RequestMapping("/adminManagerMoments.action")
