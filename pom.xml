@@ -52,7 +52,7 @@ spring-data-redisr
     <dependency>
 	    <groupId>org.apache.shiro</groupId>
 	    <artifactId>shiro-core</artifactId>
-	    <version>1.3.2</version>
+	    <version>1.10.0</version>
 	</dependency>
     <!-- 添加shiro web支持 -->
     <dependency>
